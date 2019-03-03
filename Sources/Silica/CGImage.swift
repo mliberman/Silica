@@ -35,4 +35,8 @@ public final class CGImage {
         
         self.surface = surface
     }
+
+    public func pngData() -> Data? {
+        return try? self.surface.writePNG()
+    }
 }
