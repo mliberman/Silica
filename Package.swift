@@ -1,14 +1,15 @@
-// swift-tools-version:3.0.2
-// The swift-tools-version declares the minimum version of Swift required to build this package.
-
+// swift-tools-version:4.2
 import PackageDescription
 
 let package = Package(
     name: "Silica",
-    targets: [
-        Target(name: "Silica")
+    products: [
+        .library(name: "Silica", targets: ["Silica"]),
     ],
     dependencies: [
-        .Package(url: "https://github.com/PureSwift/Cairo.git", majorVersion: 1)
+        .package(url: "https://github.com/PureSwift/Cairo.git", from: "1.2.3")
+    ],
+    targets: [
+        .target(name: "Silica", dependencies: ["Cairo"])
     ]
 )
