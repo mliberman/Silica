@@ -52,7 +52,15 @@ public final class CGContext {
     }
     
     // MARK: - Accessors
-    
+
+    public func makeImage() -> CGImage? {
+        guard
+            let pngData = try? self.surface.writePNG(),
+            let surface = try? Cairo.Surface.Image(png: pngData)
+            else { return nil }
+        return CGImage(surface: surface)
+    }
+
     /// Returns the current transformation matrix.
     public var currentTransform: CGAffineTransform {
         
