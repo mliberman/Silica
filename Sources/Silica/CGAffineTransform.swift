@@ -18,7 +18,7 @@ public typealias CGAffineTransform = CoreGraphics.CGAffineTransform
 #else
 
 /// Affine Transform
-public struct CGAffineTransform {
+public struct CGAffineTransform: Hashable, Codable {
     
     // MARK: - Properties
     

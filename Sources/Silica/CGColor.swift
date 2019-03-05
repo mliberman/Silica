@@ -9,7 +9,7 @@
 import struct Foundation.CGFloat
 import Cairo
 
-public struct CGColor: Equatable {
+public struct CGColor: Hashable, Codable {
     
     // MARK: - Properties
     
