@@ -950,7 +950,7 @@ internal extension Collection {
     @inline(__always)
     func merge<C: Collection, T>
         (_ other: C) -> [(Iterator.Element, T)]
-        where C.Iterator.Element == T, C.IndexDistance == IndexDistance, C.Index == Index {
+        where C.Iterator.Element == T, C.Index == Index {
         
         precondition(self.count == other.count, "The collection to merge must be of the same size")
         
