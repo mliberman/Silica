@@ -34,6 +34,14 @@ public final class CGImageSourcePNG: CGImageSource {
         
         self.surface = surface
     }
+
+    public init?(fromFile path: String) {
+
+        guard let surface = try? Cairo.Surface.Image.png(fromFile: path)
+            else { return nil }
+
+        self.surface = surface
+    }
     
     // MARK: - Methods
     
