@@ -39,4 +39,8 @@ public final class CGImage {
     public func pngData() -> Data? {
         return try? self.surface.writePNG()
     }
+
+    public func jpegData(withQuality quality: Int32) -> Data? {
+        return try? self.surface.writeJPEG(withQuality: quality)
+    }
 }

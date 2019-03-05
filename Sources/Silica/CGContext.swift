@@ -156,21 +156,21 @@ public final class CGContext {
             
             switch header.type {
                 
-            case CAIRO_PATH_MOVE_TO:
+            case Path.DataType.moveTo:
                 
                 let point = CGPoint(x: CGFloat(data[0].point.x),
                                     y: CGFloat(data[0].point.y))
                 
                 element = PathElement.moveToPoint(point)
                 
-            case CAIRO_PATH_LINE_TO:
+            case Path.DataType.lineTo:
                 
                 let point = CGPoint(x: CGFloat(data[0].point.x),
                                     y: CGFloat(data[0].point.y))
                 
                 element = PathElement.addLineToPoint(point)
                 
-            case CAIRO_PATH_CURVE_TO:
+            case Path.DataType.curveTo:
                 
                 let control1 = CGPoint(x: CGFloat(data[0].point.x),
                                        y: CGFloat(data[0].point.y))
@@ -181,7 +181,7 @@ public final class CGContext {
                 
                 element = PathElement.addCurveToPoint(control1, control2, destination)
                 
-            case CAIRO_PATH_CLOSE_PATH:
+            case Path.DataType.closePath:
                 
                 element = PathElement.closeSubpath
                 
@@ -346,7 +346,7 @@ public final class CGContext {
     public func restore() throws {
 
         guard let restoredState = internalState.next
-            else { throw CAIRO_STATUS_INVALID_RESTORE.toError()! }
+            else { throw CairoError(rawValue: CAIRO_STATUS_INVALID_RESTORE.rawValue)! }
         
         internalContext.restore()
         
