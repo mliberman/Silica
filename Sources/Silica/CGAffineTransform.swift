@@ -1,5 +1,5 @@
 //
-//  AffineTransform.swift
+//  CGAffineTransform.swift
 //  Silica
 //
 //  Created by Alsey Coleman Miller on 5/8/16.
@@ -37,6 +37,56 @@ public struct CGAffineTransform: Hashable, Codable {
     }
     
     public static let identity = CGAffineTransform(a: 1, b: 0, c: 0, d: 1, tx: 0, ty: 0)
+
+    public init(uniformScale scale: CGFloat) {
+        self.init(a: scale, b: 0.0, c: 0.0, d: scale, tx: 0.0, ty: 0.0)
+    }
+
+    public init(scaleX x: CGFloat, y: CGFloat) {
+        self.init(a: x, b: 0.0, c: 0.0, d: y, tx: 0.0, ty: 0.0)
+    }
+
+    public init(translationX x: CGFloat, y: CGFloat) {
+        self.init(a: 1.0, b: 0.0, c: 0.0, d: 1.0, tx: x, ty: y)
+    }
+
+    public init(rotationAngle: CGFloat) {
+        self.init(
+            a: cos(rotationAngle),
+            b: sin(rotationAngle),
+            c: -sin(rotationAngle),
+            d: cos(rotationAngle),
+            tx: 0.0,
+            ty: 0.0
+        )
+    }
+
+    public func concatenating(_ other: CGAffineTransform) -> CGAffineTransform {
+        return CGAffineTransform(
+            a: self.a * other.a + self.b * other.c,
+            b: self.a * other.b + self.b * other.d,
+            c: self.c * other.a + self.d * other.c,
+            d: self.c * other.b + self.d * other.d,
+            tx: self.tx * other.a + self.ty * other.c + other.tx,
+            ty: self.tx * other.b + self.ty * other.d + other.ty
+        )
+    }
+
+    public func rotated(by angle: CGFloat) -> CGAffineTransform {
+        return CGAffineTransform(rotationAngle: angle).concatenating(self)
+    }
+
+    public func scaledBy(x: CGFloat, y: CGFloat) -> CGAffineTransform {
+        return CGAffineTransform(scaleX: x, y: y).concatenating(self)
+    }
+
+    public func scaled(by scale: CGFloat) -> CGAffineTransform {
+        return self.scaledBy(x: scale, y: scale)
+    }
+
+    public func translatedBy(x: CGFloat, y: CGFloat) -> CGAffineTransform {
+        return CGAffineTransform(translationX: x, y: y).concatenating(self)
+    }
 }
 
 #endif
