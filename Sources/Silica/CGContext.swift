@@ -156,21 +156,21 @@ public final class CGContext {
             
             switch header.type {
                 
-            case Path.DataType.moveTo:
+            case CAIRO_PATH_MOVE_TO:
                 
                 let point = CGPoint(x: CGFloat(data[0].point.x),
                                     y: CGFloat(data[0].point.y))
                 
                 element = PathElement.moveToPoint(point)
                 
-            case Path.DataType.lineTo:
+            case CAIRO_PATH_LINE_TO:
                 
                 let point = CGPoint(x: CGFloat(data[0].point.x),
                                     y: CGFloat(data[0].point.y))
                 
                 element = PathElement.addLineToPoint(point)
                 
-            case Path.DataType.curveTo:
+            case CAIRO_PATH_CURVE_TO:
                 
                 let control1 = CGPoint(x: CGFloat(data[0].point.x),
                                        y: CGFloat(data[0].point.y))
@@ -181,7 +181,7 @@ public final class CGContext {
                 
                 element = PathElement.addCurveToPoint(control1, control2, destination)
                 
-            case Path.DataType.closePath:
+            case CAIRO_PATH_CLOSE_PATH:
                 
                 element = PathElement.closeSubpath
                 

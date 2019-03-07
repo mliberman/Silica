@@ -7,7 +7,7 @@ let package = Package(
         .library(name: "Silica", targets: ["Silica"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/mliberman/Cairo.git", from: "1.3.3")
+        .package(url: "https://github.com/mliberman/Cairo.git", from: "1.3.0")
     ],
     targets: [
         .target(name: "Silica", dependencies: ["Cairo"])

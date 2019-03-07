@@ -75,7 +75,7 @@ internal extension Cairo.Pattern {
                           Double(color.blue),
                           Double(color.alpha)))
         
-        assert(status.rawValue == 0, "Error creating Cairo.Pattern from Silica.Color: \(status)")
+        assert(status.cairo_status.rawValue == 0, "Error creating Cairo.Pattern from Silica.Color: \(status)")
     }
 }
 
