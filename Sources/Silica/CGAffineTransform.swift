@@ -18,7 +18,7 @@ public typealias CGAffineTransform = CoreGraphics.CGAffineTransform
 #else
 
 /// Affine Transform
-public struct CGAffineTransform: Hashable, Codable {
+public struct CGAffineTransform: Hashable {
     
     // MARK: - Properties
     
@@ -86,6 +86,28 @@ public struct CGAffineTransform: Hashable, Codable {
 
     public func translatedBy(x: CGFloat, y: CGFloat) -> CGAffineTransform {
         return CGAffineTransform(translationX: x, y: y).concatenating(self)
+    }
+}
+
+extension CGAffineTransform: Codable {
+
+    // This is how CoreGraphics encodes `CGAffineTransform`.
+    public func encode(to encoder: Encoder) throws {
+        try [self.a, self.b, self.c, self.d, self.tx, self.ty].encode(to: encoder)
+    }
+
+    public init(from decoder: Decoder) throws {
+        let values = try [Double].init(from: decoder).map { CGFloat($0) }
+        guard values.count == 6 else {
+            throw DecodingError.typeMismatch(
+                [Double].self,
+                DecodingError.Context(
+                    codingPath: [],
+                    debugDescription: "`CGAffineTransform` requires `[Double]` of length 6"
+                )
+            )
+        }
+        self.init(a: values[0], b: values[1], c: values[2], d: values[3], tx: values[4], ty: values[5])
     }
 }
 
