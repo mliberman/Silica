@@ -6,6 +6,7 @@
 //  Copyright © 2016 PureSwift. All rights reserved.
 //
 
+import struct Foundation.CGFloat
 import struct Foundation.Data
 import Cairo
 
@@ -42,5 +43,9 @@ public final class CGImage {
 
     public func jpegData(withQuality quality: Int32) -> Data? {
         return try? self.surface.writeJPEG(withQuality: quality)
+    }
+
+    public func jpegData(compressionQuality: CGFloat) -> Data? {
+        return self.jpegData(withQuality: Int32(round(100.0 * Double(compressionQuality))))
     }
 }
