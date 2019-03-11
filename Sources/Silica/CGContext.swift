@@ -56,7 +56,7 @@ public final class CGContext {
     public func makeImage() -> CGImage? {
         guard
             let pngData = try? self.surface.writePNG(),
-            let surface = try? Cairo.Surface.Image(png: pngData)
+            let surface = try? Cairo.Surface.Image(pngData: pngData)
             else { return nil }
         return CGImage(surface: surface)
     }

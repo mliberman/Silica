@@ -29,7 +29,7 @@ public final class CGImageSourcePNG: CGImageSource {
     
     public init?(data: Data) {
         
-        guard let surface = try? Cairo.Surface.Image(png: data)
+        guard let surface = try? Cairo.Surface.Image(pngData: data)
             else { return nil }
         
         self.surface = surface
@@ -37,7 +37,7 @@ public final class CGImageSourcePNG: CGImageSource {
 
     public init?(fromFile path: String) {
 
-        guard let surface = try? Cairo.Surface.Image.png(fromFile: path)
+        guard let surface = try? Cairo.Surface.Image(contentsOfPngFile: path)
             else { return nil }
 
         self.surface = surface

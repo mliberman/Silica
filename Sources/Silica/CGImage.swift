@@ -37,6 +37,11 @@ public final class CGImage {
         self.surface = surface
     }
 
+    public convenience init?(contentsOfFile path: String) {
+        guard let surface = try? Cairo.Surface.Image(contentsOfFile: path) else { return nil }
+        self.init(surface: surface)
+    }
+
     public func pngData() -> Data? {
         return try? self.surface.writePNG()
     }
