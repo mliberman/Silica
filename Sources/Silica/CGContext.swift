@@ -635,50 +635,76 @@ public final class CGContext {
         // undo clipping (if any)
         internalContext.restore()
     }
-    
-    // MARK: - Drawing an Image to a Graphics Context
-    
+
     /// Draws an image into a graphics context.
-    public func draw(_ image: CGImage, in rect: CGRect) {
+    public func draw(
+        _ image: CGImage,
+        mask: CGImage? = nil,
+        in rect: CGRect
+        ) {
         
         internalContext.save()
         
-        let imageSurface = image.surface
-        
-        let sourceRect = CGRect(x: 0, y: 0, width: CGFloat(image.width), height: CGFloat(image.height))
-        
-        let pattern = Pattern(surface: imageSurface)
-        
-        var patternMatrix = Matrix.identity
-        
-        patternMatrix.translate(x: Double(rect.origin.x),
-                                y: Double(rect.origin.y))
-        
-        patternMatrix.scale(x: Double(rect.size.width / sourceRect.size.width),
-                            y: Double(rect.size.height / sourceRect.size.height))
-        
-        patternMatrix.scale(x: 1, y: -1)
-        
-        patternMatrix.translate(x: 0, y: Double(-sourceRect.size.height))
-        
-        patternMatrix.invert()
-        
-        pattern.matrix = patternMatrix
-        
-        pattern.extend = .pad
-        
         internalContext.operator = CAIRO_OPERATOR_OVER
-        
-        internalContext.source = pattern
-        
-        internalContext.addRectangle(x: Double(rect.origin.x),
-                                     y: Double(rect.origin.y),
-                                     width: Double(rect.size.width),
-                                     height: Double(rect.size.height))
-        
-        internalContext.fill()
-        
+
+        internalContext.source = self.makePattern(image: image, rect: rect)
+
+        internalContext.addRectangle(
+            x: Double(rect.origin.x),
+            y: Double(rect.origin.y),
+            width: Double(rect.size.width),
+            height: Double(rect.size.height)
+        )
+
+        internalContext.clip()
+
+        if let mask = mask {
+            let pattern = self.makePattern(image: mask, rect: rect)
+            internalContext.mask(pattern: pattern)
+        } else {
+            internalContext.paint()
+        }
+
         internalContext.restore()
+    }
+
+    private func makePattern(image: CGImage, rect: CGRect) -> Cairo.Pattern {
+
+        let sourceRect = CGRect(
+            x: 0,
+            y: 0,
+            width: CGFloat(image.width),
+            height: CGFloat(image.height)
+        )
+
+        let pattern = Pattern(surface: image.surface)
+
+        var patternMatrix = Matrix.identity
+
+        patternMatrix.translate(
+            x: Double(rect.origin.x),
+            y: Double(rect.origin.y)
+        )
+
+        patternMatrix.scale(
+            x: Double(rect.size.width / sourceRect.size.width),
+            y: Double(rect.size.height / sourceRect.size.height)
+        )
+
+        patternMatrix.scale(x: 1, y: -1)
+
+        patternMatrix.translate(
+            x: 0,
+            y: Double(-sourceRect.size.height)
+        )
+
+        patternMatrix.invert()
+
+        pattern.matrix = patternMatrix
+
+        pattern.extend = .none
+
+        return pattern
     }
     
     // MARK: - Drawing Text
