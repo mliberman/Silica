@@ -7,6 +7,7 @@
 //
 
 import struct Foundation.CGFloat
+import struct Foundation.CGSize
 import struct Foundation.Data
 import Cairo
 
@@ -18,13 +19,19 @@ public final class CGImage {
     // MARK: - Properties
     
     public var width: Int {
-        
         return surface.width
     }
     
     public var height: Int {
-        
         return surface.height
+    }
+
+    public var size: CGSize {
+        return CGSize(width: width, height: height)
+    }
+
+    public var scale: CGFloat {
+        return 1.0
     }
     
     /// The cached Cairo surface for this image.
@@ -33,9 +40,11 @@ public final class CGImage {
     // MARK: - Initialization
     
     internal init(surface: Cairo.Surface.Image) {
-        
         self.surface = surface
     }
+}
+
+extension CGImage {
 
     public convenience init?(contentsOfFile path: String) {
         guard let surface = try? Cairo.Surface.Image(contentsOfFile: path) else { return nil }
@@ -43,14 +52,30 @@ public final class CGImage {
     }
 
     public func pngData() -> Data? {
-        return try? self.surface.writePNG()
+        return try? surface.writePNG()
     }
 
     public func jpegData(withQuality quality: Int32) -> Data? {
-        return try? self.surface.writeJPEG(withQuality: quality)
+        return try? surface.writeJPEG(withQuality: quality)
     }
 
     public func jpegData(compressionQuality: CGFloat) -> Data? {
-        return self.jpegData(withQuality: Int32(round(100.0 * Double(compressionQuality))))
+        return jpegData(withQuality: Int32(round(100.0 * Double(compressionQuality))))
+    }
+
+    public func masking(_ mask: CGImage) -> CGImage? {
+        guard
+            let surface = try? Surface.Image(
+                format: surface.format ?? .argb32,
+                width: width,
+                height: height
+            ),
+            let context = try? CGContext(
+                surface: surface,
+                size: size
+            )
+            else { return nil }
+        context.draw(self, mask: mask, in: context.bounds)
+        return context.makeImage()
     }
 }

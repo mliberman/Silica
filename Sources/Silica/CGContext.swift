@@ -21,8 +21,24 @@ public final class CGContext {
     // MARK: - Properties
     
     public let surface: Cairo.Surface
-    
+
     public let size: CGSize
+
+    public var width: Int {
+        return Int(round(size.width))
+    }
+
+    public var height: Int {
+        return Int(round(size.height))
+    }
+
+    public var scale: CGFloat {
+        return 1.0
+    }
+
+    public var bounds: CGRect {
+        return CGRect(origin: .zero, size: size)
+    }
     
     public var textMatrix = CGAffineTransform.identity
     
@@ -54,11 +70,8 @@ public final class CGContext {
     // MARK: - Accessors
 
     public func makeImage() -> CGImage? {
-        guard
-            let pngData = try? self.surface.writePNG(),
-            let surface = try? Cairo.Surface.Image(pngData: pngData)
-            else { return nil }
-        return CGImage(surface: surface)
+        guard let image = surface as? Cairo.Surface.Image else { return nil }
+        return CGImage(surface: image)
     }
 
     /// Returns the current transformation matrix.
