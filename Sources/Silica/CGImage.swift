@@ -51,6 +51,11 @@ extension CGImage {
         self.init(surface: surface)
     }
 
+    public convenience init?(data: Data) {
+        guard let surface = try? Cairo.Surface.Image(data: data) else { return nil }
+        self.init(surface: surface)
+    }
+
     public func pngData() -> Data? {
         return try? surface.writePNG()
     }
