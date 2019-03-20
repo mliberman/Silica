@@ -56,6 +56,12 @@ extension CGImage {
         self.init(surface: surface)
     }
 
+    public typealias PixelFormat = Cairo.ImageFormat
+
+    public var pixelFormat: PixelFormat? {
+        return self.surface.format
+    }
+
     public func pngData() -> Data? {
         return try? surface.writePNG()
     }
@@ -71,7 +77,7 @@ extension CGImage {
     public func masking(_ mask: CGImage) -> CGImage? {
         guard
             let surface = try? Surface.Image(
-                format: surface.format ?? .argb32,
+                format: pixelFormat ?? .argb32,
                 width: width,
                 height: height
             ),
