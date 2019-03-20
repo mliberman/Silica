@@ -59,7 +59,11 @@ extension CGImage {
     public typealias PixelFormat = Cairo.ImageFormat
 
     public var pixelFormat: PixelFormat? {
-        return self.surface.format
+        return surface.format
+    }
+
+    public var isMask: Bool {
+        return pixelFormat == .some(.a8) || pixelFormat == .some(.a1)
     }
 
     public func pngData() -> Data? {
