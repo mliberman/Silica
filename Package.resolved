@@ -5,9 +5,9 @@
         "package": "Cairo",
         "repositoryURL": "https://github.com/mliberman/Cairo.git",
         "state": {
-          "branch": null,
-          "revision": "ed8c29f88f185c4d8c31648580b222356e8e3ff9",
-          "version": "1.3.4"
+          "branch": "feature/xcode-10.2",
+          "revision": "bffc5a0bd74c7304e26b7619c1b10afaa6ee1264",
+          "version": null
         }
       }
     ]

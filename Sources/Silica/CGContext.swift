@@ -925,7 +925,7 @@ public final class CGContext {
 /// Default black pattern
 fileprivate let DefaultPattern = Cairo.Pattern(color: (red: 0, green: 0, blue: 0))
 
-fileprivate extension Silica.CGContext {
+extension Silica.CGContext {
     
     /// To save non-Cairo state variables
     fileprivate final class State {
@@ -1002,7 +1002,7 @@ internal extension Collection {
     import Foundation
     import AppKit
     
-    public extension Silica.CGContext {
+    extension Silica.CGContext {
         
         @objc(debugQuickLookObject)
         public var debugQuickLookObject: AnyObject {
