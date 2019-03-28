@@ -7,7 +7,7 @@ let package = Package(
         .library(name: "Silica", targets: ["Silica"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/mliberman/Cairo.git", .branch("feature/xcode-10.2"))
+        .package(url: "https://github.com/mliberman/Cairo.git", .exact("1.4.0"))
     ],
     targets: [
         .target(name: "Silica", dependencies: ["Cairo"])
