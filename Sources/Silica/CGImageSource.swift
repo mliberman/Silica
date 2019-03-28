@@ -23,7 +23,7 @@ public protocol CGImageSource: class, RandomAccessCollection {
     func createImage(at index: Int) -> CGImage?
 }
 
-public extension CGImageSource {
+extension CGImageSource {
     
     public var count: Int { return 1 } // only some formats like GIF have multiple images
     

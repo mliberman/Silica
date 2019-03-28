@@ -13,7 +13,7 @@ import CFontConfig
 import Foundation
 
 /// Silica's `Font` type.
-public struct CGFont: Equatable, Hashable {
+public struct CGFont {
     
     /// Private font cache.
     private static var cache = [String: CGFont]()
@@ -66,21 +66,17 @@ public struct CGFont: Equatable, Hashable {
     }
 }
 
-// MARK: - Equatable
-
-public func == (lhs: CGFont, rhs: CGFont) -> Bool {
-    
-    // quick and easy way
-    return lhs.name == rhs.name
-}
-
 // MARK: - Hashable
 
-public extension CGFont {
-    
-    var hashValue: Int {
-        
-        return name.hashValue
+extension CGFont: Hashable {
+
+    public static func == (lhs: CGFont, rhs: CGFont) -> Bool {
+        // quick and easy way
+        return lhs.name == rhs.name
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.name)
     }
 }
 
