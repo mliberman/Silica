@@ -1,10 +1,17 @@
 //
-//  ColorRenderingIntent.swift
+//  CGColorRenderingIntent.swift
 //  Silica
 //
 //  Created by Alsey Coleman Miller on 6/2/17.
 //
 //
+
+#if os(macOS)
+
+import enum CoreGraphics.CGColorRenderingIntent
+public typealias CGColorRenderingIntent = CoreGraphics.CGColorRenderingIntent
+
+#else
 
 /// The rendering intent specifies how Silica should handle colors
 /// that are not located within the gamut of the destination color space of a graphics context. 
@@ -13,7 +20,7 @@
 /// If you do not explicitly set the rendering intent,
 /// the graphics context uses the relative colorimetric rendering intent, 
 /// except when drawing sampled images.
-public enum ColorRenderingIntent {
+public enum CGColorRenderingIntent {
     
     /// The default rendering intent for the graphics context.
     case `default`
@@ -48,3 +55,5 @@ public enum ColorRenderingIntent {
     /// Saturation intent is good for reproducing images with low detail, such as presentation charts and graphs.
     case saturation
 }
+
+#endif
